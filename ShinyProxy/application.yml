@@ -1,0 +1,79 @@
+proxy:
+  title: Open Analytics Shiny Proxy
+  logo-url: file:///opt/shinyproxy/templates/logo/logo.png
+  landing-page: /
+  heartbeat-rate: 10000
+  heartbeat-timeout: 300000
+  port: 8080
+  authentication: spcs
+  container-backend: spcs
+  stop-proxies-on-shutdown: false
+  recover-running-proxies: true
+  admin-groups: shinyproxy_admins
+  body-classes:
+    - shinyproxy-layout-grid
+    - shinyproxy-layout-grid-3-columns
+  spcs:
+    compute-pool: example_compute_pool
+    compute-warehouse: example_warehouse
+    use-role: shinyproxy_apps
+
+  specs:
+    - id: 01_hello
+      access-groups: [ shinyproxy_users ]
+      container-image: "/example/image/repository/shinyproxy-integration-test-app:latest"
+      container-cmd: [ "R", "-e", "shinyproxy::run_01_hello()" ]
+      container-memory-request: 2048
+      container-cpu-request: 1000
+      port: 3838
+    - id: ttyd
+      access-groups: [ shinyproxy_users ]
+      display-name: SnowShell (ttyd)
+      description: Web-based terminal using ttyd
+      container-image: "/example/image/repository/ttyd:latest"
+      container-memory-request: 512
+      container-cpu-request: 256
+      port: 7681
+    - id: http_echo
+      access-groups: [ shinyproxy_users ]
+      display-name: HTTPEcho
+      description: Listens on http/https, echoes details about web requests including headers, body, and feature flags.
+      container-image: "/example/image/repository/http-https-echo:latest"
+      container-memory-request: 512
+      container-cpu-request: 1000
+      port: 8080
+    - id: code_server
+      access-groups: [ shinyproxy_users ]
+      container-image: "/example/image/repository/code-server:latest"
+      container-memory-request: 2048
+      container-cpu-request: 1000
+      port: 8443
+      container-volumes: ["my-volume:/mnt/my-volume"]
+      spcs-volumes:                               # optional volume list
+        - name: my-volume
+          source: block
+          size: 20           # specify if memory or block is the volume source
+    - id: rstudio 
+      access-groups: [ shinyproxy_users ]    
+      container-image: "/example/image/repository/rstudio:latest"
+      container-memory-request: 2048
+      container-cpu-request: 1000
+      port: 8787
+      container-env:
+        DISABLE_AUTH: true
+        USER: "#{proxy.userId}"
+        WWW_ROOT_PATH: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH')}"
+
+logging:
+  file:
+    name: shinyproxy.log
+  level:
+    root: INFO
+    eu.openanalytics.containerproxy.backend.spcs: DEBUG
+    eu.openanalytics.containerproxy.service: DEBUG
+    eu.openanalytics.containerproxy.recovery: DEBUG
+    eu.openanalytics.containerproxy.model.store: DEBUG
+    eu.openanalytics.containerproxy.store: DEBUG
+    eu.openanalytics.containerproxy.auth.impl.spcs.SpcsAuthenticationProvider: DEBUG
+    eu.openanalytics.containerproxy.auth.impl.spcs.SpcsAuthenticationFilter: DEBUG
+    eu.openanalytics.containerproxy.auth.impl.SpcsAuthenticationBackend: DEBUG
