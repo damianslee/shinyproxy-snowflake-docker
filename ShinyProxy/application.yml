@@ -26,11 +26,11 @@ proxy:
       container-memory-request: 2048
       container-cpu-request: 1000
       port: 3838
-    - id: ttyd
+    - id: snowshell
       access-groups: [ shinyproxy_users ]
-      display-name: SnowShell (ttyd)
-      description: Web-based terminal using ttyd
-      container-image: "/example/image/repository/ttyd:latest"
+      display-name: SnowShell
+      description: Web-based terminal with Snowflake CLI and Cortex Code
+      container-image: "/example/image/repository/snowshell:latest"
       container-memory-request: 512
       container-cpu-request: 256
       port: 7681
@@ -62,7 +62,7 @@ proxy:
       container-env:
         DISABLE_AUTH: true
         USER: "#{proxy.userId}"
-        WWW_ROOT_PATH: "#{proxy.getRuntimeValue('SHINYPROXY_PUBLIC_PATH')}"
+        # SHINYPROXY_PUBLIC_PATH is injected by ShinyProxy automatically; RStudio reads it in 03_setup_root_path.sh
 
 logging:
   file:

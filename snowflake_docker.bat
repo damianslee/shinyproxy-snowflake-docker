@@ -11,17 +11,15 @@ docker pull --platform linux/amd64 openanalytics/shinyproxy-integration-test-app
 docker tag openanalytics/shinyproxy-integration-test-app:latest %SNOWFLAKE_ACCOUNT%.registry.snowflakecomputing.com/example/image/repository/shinyproxy-integration-test-app:latest
 docker push %SNOWFLAKE_ACCOUNT%.registry.snowflakecomputing.com/example/image/repository/shinyproxy-integration-test-app:latest
 
-docker pull --platform linux/amd64 linuxserver/code-server:latest
-docker tag linuxserver/code-server:latest %SNOWFLAKE_ACCOUNT%.registry.snowflakecomputing.com/example/image/repository/code-server:latest
+docker build --platform linux/amd64 -t %SNOWFLAKE_ACCOUNT%.registry.snowflakecomputing.com/example/image/repository/code-server:latest ./CodeServer
 docker push %SNOWFLAKE_ACCOUNT%.registry.snowflakecomputing.com/example/image/repository/code-server:latest
 
 docker pull --platform linux/amd64 mendhak/http-https-echo:latest
 docker tag mendhak/http-https-echo:latest %SNOWFLAKE_ACCOUNT%.registry.snowflakecomputing.com/example/image/repository/http-https-echo:latest
 docker push %SNOWFLAKE_ACCOUNT%.registry.snowflakecomputing.com/example/image/repository/http-https-echo:latest
 
-docker pull --platform linux/amd64 tsl0922/ttyd:alpine
-docker tag tsl0922/ttyd:alpine %SNOWFLAKE_ACCOUNT%.registry.snowflakecomputing.com/example/image/repository/ttyd:latest
-docker push %SNOWFLAKE_ACCOUNT%.registry.snowflakecomputing.com/example/image/repository/ttyd:latest
+docker build --platform linux/amd64 -t %SNOWFLAKE_ACCOUNT%.registry.snowflakecomputing.com/example/image/repository/snowshell:latest ./SnowShell
+docker push %SNOWFLAKE_ACCOUNT%.registry.snowflakecomputing.com/example/image/repository/snowshell:latest
 
 docker build --platform linux/amd64 -t %SNOWFLAKE_ACCOUNT%.registry.snowflakecomputing.com/example/image/repository/rstudio:latest ./RStudio
 docker push %SNOWFLAKE_ACCOUNT%.registry.snowflakecomputing.com/example/image/repository/rstudio:latest

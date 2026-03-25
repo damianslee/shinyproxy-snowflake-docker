@@ -1,13 +1,11 @@
 #!/usr/bin/with-contenv bash
 
-echo "root path: $WWW_ROOT_PATH"
+# ShinyProxy injects SHINYPROXY_PUBLIC_PATH (see shinyproxy.io SpEL / runtime-values).
+echo "public path: $SHINYPROXY_PUBLIC_PATH"
 
-if [[ ! -z $WWW_ROOT_PATH ]]
-then
-        echo "Set www-root-path to $WWW_ROOT_PATH"
-        echo "www-root-path=$WWW_ROOT_PATH" >> /etc/rstudio/rserver.conf
+if [[ -n "${SHINYPROXY_PUBLIC_PATH:-}" ]]; then
+  echo "Set www-root-path to $SHINYPROXY_PUBLIC_PATH"
+  echo "www-root-path=$SHINYPROXY_PUBLIC_PATH" >> /etc/rstudio/rserver.conf
 else
-        echo "Not setting www-root-path"
+  echo "Not setting www-root-path (SHINYPROXY_PUBLIC_PATH not set)"
 fi
-
-

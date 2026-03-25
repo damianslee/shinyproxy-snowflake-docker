@@ -7,7 +7,7 @@ FROM public.ecr.aws/docker/library/ubuntu:noble as builder
 ARG NEXUS_REPOSITORY=releases
 #ARG  JAR_LOCATION=https://nexus.openanalytics.eu/service/rest/v1/search/assets/download?sort=version&repository=$NEXUS_REPOSITORY&maven.groupId=eu.openanalytics&maven.artifactId=shinyproxy&maven.extension=jar
 
-ARG JAR_LOCATION=shinyproxy-3.2.2-exec.jar
+ARG JAR_LOCATION=shinyproxy-3.2.3-exec.jar
 
 RUN mkdir /opt/shinyproxy
 ADD --chmod=644 $JAR_LOCATION /opt/shinyproxy/shinyproxy.jar
